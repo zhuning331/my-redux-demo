@@ -35,11 +35,18 @@ const combineReducers = reducers => {
 
     // return a combined new reducer function
     return (state = {}, action) => {
-        reducerFunctionKeys.forEach(reducerFunctionKey => {
-            const reducer = reducerFunctions[reducerFunctionKey];
-            nextState[reducerFunctionKeys] = reducer(state[reducerFunctionKeys], action);
-        })
-        return nextState;
+        // reducerFunctionKeys.forEach(reducerFunctionKey => {
+        //     const reducer = reducerFunctions[reducerFunctionKey];
+        //     nextState[reducerFunctionKeys] = reducer(state[reducerFunctionKeys], action);
+        // })
+
+        // 改以 Array.reduce 實作，回傳新的 state
+        return reducerFunctionKeys.reduce((accum, curr) => {
+            const reducer = reducerFunctions[curr];
+            accum[curr] = reducer(state[curr], action);
+            return accum;
+        }, {});
+        // return nextState;
     }
 }
 
